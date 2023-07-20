@@ -22,18 +22,15 @@ jobs:
           name: Build Docker image
           command: docker build -t arminnuk/node-app:latest .
 
-      # Pokretanje Docker kontejnera
-      - run:
-          name: Run Docker container
-          command: docker run -p 3004:3004 arminnuk/node-app:latest
-
       # Pushovanje Docker image-a na Docker Hub (opciono)
       # Ako želite da pushujete sliku na Docker Hub, otkomentarišite sledeće korake
-      # - run:
-      #     name: Push Docker image to Docker Hub
-      #     command: |
-      #       echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-      #       docker push arminnuk/node-app:latest
+      - run:
+          name: Push Docker image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push arminnuk/node-app:latest
 
       # Dodajte ovde korake za deployovanje na ciljnom serveru
+
 # ...
+
