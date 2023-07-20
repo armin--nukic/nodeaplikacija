@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Node.js Users App</title>
+  </head>
+  <body>
+    <h1>Lista korisnika</h1>
+    <ul id="user-list"></ul>
+
+    <h2>Dodaj novog korisnika:</h2>
+    <input type="text" id="name" placeholder="Ime" />
+    <input type="text" id="email" placeholder="Email" />
+    <button onclick="addUser()">Dodaj korisnika</button>
+
+    <script>
+      async function getUsers() {
+        const response = await fetch("/users");
+        const users = await response.json();
+        return users;
+      }
+
+      async function renderUserList() {
+        const users = await getUsers();
+        const userList = document.getElementById("user-list");
+
+        userList.innerHTML = "";
+        users.forEach((user) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = `Ime: ${user.name}, Email: ${user.email}`;
+          userList.appendChild(listItem);
+        });
+      }
+
+      async function addUser() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+
+        if (!name || !email) {
+          alert("Molimo popunite oba polja.");
+          return;
+        }
+
+        const response = await fetch("/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email }),
+        });
+
+        if (response.ok) {
+          // Osvežimo listu nakon dodavanja novog korisnika
+          renderUserList();
+
+          // Resetujemo polja za unos
+          document.getElementById("name").value = "";
+          document.getElementById("email").value = "";
+        } else {
+          alert("Došlo je do greške prilikom dodavanja korisnika.");
+        }
+      }
+
+      // Osvežimo listu korisnika odmah pri učitavanju stranice
+      renderUserList();
+    </script>
+  </body>
+</html>
