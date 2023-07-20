@@ -20,6 +20,10 @@ jobs:
           key: npm-v1-{{ checksum "package.json" }}
 
       - run:
+          name: Run tests
+          command: npm test
+
+      - run:
           name: Build Docker image
           command: docker build -t arminnuk/node-app:latest .
 
