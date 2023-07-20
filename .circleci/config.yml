@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Push Docker image to Docker Hub
           command: |
-            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push arminnuk/node-app:latest
 
       # Dodajte ovde korake za deployovanje na ciljnom serveru
