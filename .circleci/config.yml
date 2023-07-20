@@ -2,37 +2,34 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:14 # Izaberite odgovarajuću Node.js verziju
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - npm-v1-{{ checksum "package.json" }}
-            - npm-v1-
 
+      # Postavljanje Docker host-a
+      - setup_remote_docker:
+          version: 20.10.11 # Izaberite odgovarajuću verziju Docker-a
+
+      # Instaliranje zavisnosti i pokretanje testova
       - run:
-          name: Install dependencies
-          command: npm install
+          name: Install dependencies and run tests
+          command: |
+            npm install
+            npm test
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: npm-v1-{{ checksum "package.json" }}
-
-      - run:
-          name: Run tests
-          command: npm test
-
+      # Buildovanje Docker image-a
       - run:
           name: Build Docker image
           command: docker build -t arminnuk/node-app:latest .
 
-      - run:
-          name: Push Docker image to Docker Hub
-          command: |
-            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            docker push DOCKERHUB_USERNAME/node-app:latest
+      # Pushovanje Docker image-a na Docker Hub (opciono)
+      # Ako želite da pushujete sliku na Docker Hub, otkomentarišite sledeće korake
+      # - run:
+      #     name: Push Docker image to Docker Hub
+      #     command: |
+      #       echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+      #       docker push arminnuk/node-app:latest
 
       # Dodajte ovde korake za deployovanje na ciljnom serveru
-
 # ...
+
