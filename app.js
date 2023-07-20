@@ -31,3 +31,12 @@ app.delete("/users/:email", (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+// app.js
+function addNumbers(a, b) {
+  return a + b;
+}
+
+module.exports = {
+  addNumbers,
+};

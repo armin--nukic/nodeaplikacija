@@ -1,18 +1,20 @@
-# Koristimo zvanični Node.js Docker image kao osnovu
+# Koristimo zvanični Node.js Docker image kao baznu sliku
 FROM node:14
 
-# Postavljamo radni direktorijum unutar kontejnera
+# Kreiramo direktorijum za našu aplikaciju unutar Docker kontejnera
 WORKDIR /usr/src/app
 
-# Kopiramo package.json i package-lock.json u radni direktorijum
+# Kopiramo package.json i package-lock.json u WORKDIR
 COPY package*.json ./
 
 # Instaliramo zavisnosti
 RUN npm install
 
-# Kopiramo ostatak aplikacije u radni direktorijum kontejnera
+# Kopiramo ceo sadržaj aplikacije u WORKDIR
 COPY . .
 
-# Pokrećemo aplikaciju na portu 3004 kada se kontejner pokrene
-EXPOSE 3004
-CMD ["node", "app.js"]
+# Postavljamo ENV promenljivu za port na 3004
+ENV PORT 3004
+
+# Definišemo komandu za pokretanje aplikacije
+CMD [ "npm", "start" ]
