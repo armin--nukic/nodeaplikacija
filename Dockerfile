@@ -13,5 +13,6 @@ RUN npm install
 # Kopiramo ostatak aplikacije u radni direktorijum kontejnera
 COPY . .
 
-# Pokrećemo aplikaciju kada se kontejner pokrene
+# Pokrećemo aplikaciju na portu 3004 kada se kontejner pokrene
+EXPOSE 3004
 CMD ["node", "app.js"]
